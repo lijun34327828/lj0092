@@ -2,6 +2,7 @@ import { Routes, Route, NavLink } from 'react-router-dom';
 import BookingPage from './pages/BookingPage';
 import BookingsListPage from './pages/BookingsListPage';
 import AdminPage from './pages/AdminPage';
+import MemberCenterPage from './pages/MemberCenterPage';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
           <NavLink to="/bookings" className={({ isActive }) => (isActive ? 'active' : '')}>
             我的预约
           </NavLink>
+          <NavLink to="/member" className={({ isActive }) => (isActive ? 'active' : '')}>
+            会员中心
+          </NavLink>
           <NavLink to="/admin" className={({ isActive }) => (isActive ? 'active' : '')}>
             后台管理
           </NavLink>
@@ -24,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<BookingPage />} />
           <Route path="/bookings" element={<BookingsListPage />} />
+          <Route path="/member" element={<MemberCenterPage />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>

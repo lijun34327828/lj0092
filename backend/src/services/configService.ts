@@ -6,6 +6,8 @@ import {
   TemporaryServiceFeeRule,
   VenueZone,
   TimeSlot,
+  MemberLevelRule,
+  DynamicPremiumRule,
 } from '../types';
 import {
   timePricingRules,
@@ -15,8 +17,14 @@ import {
   temporaryServiceFeeRule as defaultTemporaryFeeRule,
   venueZones,
   timeSlots,
+  memberLevelRules,
 } from '../data/store';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  getDynamicPremiumRule as getDynamicPremiumRuleFromPremium,
+  updateDynamicPremiumRule as updateDynamicPremiumRuleFromPremium,
+  UpdatePremiumRuleUpdates,
+} from './premiumService';
 
 let temporaryServiceFeeRule = { ...defaultTemporaryFeeRule };
 
@@ -165,4 +173,19 @@ export function updateTemporaryServiceFeeRule(
 ): TemporaryServiceFeeRule {
   temporaryServiceFeeRule = { ...temporaryServiceFeeRule, ...updates };
   return { ...temporaryServiceFeeRule };
+}
+
+export function getMemberLevelRules(): MemberLevelRule[] {
+  return [...memberLevelRules];
+}
+
+export function getDynamicPremiumRule(): DynamicPremiumRule {
+  return getDynamicPremiumRuleFromPremium();
+}
+
+export function updateDynamicPremiumRule(
+  id: string,
+  updates: UpdatePremiumRuleUpdates
+): DynamicPremiumRule {
+  return updateDynamicPremiumRuleFromPremium(id, updates);
 }

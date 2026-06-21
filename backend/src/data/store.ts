@@ -7,6 +7,12 @@ import {
   RefundRule,
   TemporaryServiceFeeRule,
   Booking,
+  MemberLevelRule,
+  Member,
+  WalletTransaction,
+  Coupon,
+  DynamicPremiumRule,
+  WaitlistEntry,
 } from '../types';
 
 export const venueZones: VenueZone[] = [
@@ -224,3 +230,71 @@ export const temporaryServiceFeeRule: TemporaryServiceFeeRule = {
 };
 
 export const bookings: Booking[] = [];
+
+export const memberLevelRules: MemberLevelRule[] = [
+  {
+    id: 'ml-1',
+    level: 'regular',
+    levelName: '普通会员',
+    minTotalSpent: 0,
+    discountRate: 1.0,
+    description: '注册即享，无额外折扣',
+  },
+  {
+    id: 'ml-2',
+    level: 'silver',
+    levelName: '白银会员',
+    minTotalSpent: 500,
+    discountRate: 0.95,
+    description: '累计消费满500元，享95折',
+  },
+  {
+    id: 'ml-3',
+    level: 'gold',
+    levelName: '黄金会员',
+    minTotalSpent: 2000,
+    discountRate: 0.9,
+    description: '累计消费满2000元，享9折',
+  },
+  {
+    id: 'ml-4',
+    level: 'platinum',
+    levelName: '铂金会员',
+    minTotalSpent: 5000,
+    discountRate: 0.85,
+    description: '累计消费满5000元，享85折',
+  },
+];
+
+export const members: Member[] = [];
+
+export const walletTransactions: WalletTransaction[] = [];
+
+export const coupons: Coupon[] = [];
+
+export const dynamicPremiumRules: DynamicPremiumRule[] = [
+  {
+    id: 'dp-1',
+    name: '标准动态溢价规则',
+    occupancyThreshold: 0.7,
+    premiumRate: 0.2,
+    enabled: true,
+    description: '当日该时段全场预约率≥70%时，新下单场地单价上浮20%',
+  },
+];
+
+export const waitlistEntries: WaitlistEntry[] = [];
+
+export const notifications: Array<{
+  id: string;
+  memberId?: string;
+  bookingId?: string;
+  waitlistId?: string;
+  type: 'waitlist_matched' | 'booking_cancelled' | 'refund_completed' | 'coupon_expiring' | 'level_upgraded';
+  title: string;
+  content: string;
+  read: boolean;
+  createdAt: string;
+}> = [];
+
+export const globalLocks: Map<string, { holder: string; acquiredAt: number }> = new Map();

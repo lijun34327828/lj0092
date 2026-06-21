@@ -66,7 +66,7 @@ router.get('/availability/zones', (req: Request, res: Response) => {
 
 router.post('/calculate-price', (req: Request, res: Response) => {
   try {
-    const { zoneId, date, startTime, endTime, peopleCount, equipment } = req.body;
+    const { zoneId, date, startTime, endTime, peopleCount, equipment, memberId, memberTotalSpent, couponIds } = req.body;
 
     if (!zoneId || !date || !startTime || !endTime || !peopleCount) {
       return res.status(400).json({ error: '缺少必要参数' });
@@ -79,6 +79,9 @@ router.post('/calculate-price', (req: Request, res: Response) => {
       endTime,
       peopleCount,
       equipment: equipment || [],
+      memberId,
+      memberTotalSpent,
+      couponIds,
     });
 
     res.json(priceResult);
@@ -87,15 +90,15 @@ router.post('/calculate-price', (req: Request, res: Response) => {
   }
 });
 
-router.post('/', (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
-    const { zoneId, userName, phone, date, startTime, endTime, peopleCount, equipment } = req.body;
+    const { zoneId, userName, phone, date, startTime, endTime, peopleCount, equipment, memberId, couponIds, useBalance } = req.body;
 
     if (!zoneId || !userName || !phone || !date || !startTime || !endTime || !peopleCount) {
       return res.status(400).json({ error: '缺少必要参数' });
     }
 
-    const booking = createBooking({
+    const booking = await createBooking({
       zoneId,
       userName,
       phone,
@@ -104,6 +107,9 @@ router.post('/', (req: Request, res: Response) => {
       endTime,
       peopleCount,
       equipment: equipment || [],
+      memberId,
+      couponIds,
+      useBalance,
     });
 
     res.status(201).json(booking);
@@ -139,9 +145,9 @@ router.get('/', (req: Request, res: Response) => {
   }
 });
 
-router.post('/:id/cancel', (req: Request, res: Response) => {
+router.post('/:id/cancel', async (req: Request, res: Response) => {
   try {
-    const result = cancelBooking(req.params.id);
+    const result = await cancelBooking(req.params.id);
     res.json(result);
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });

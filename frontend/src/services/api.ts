@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { VenueZone, TimeSlot, Equipment, Booking, BookingEquipment, PriceBreakdown, GroupDiscountTier, RefundRule } from '../types';
+import type { VenueZone, TimeSlot, Equipment, Booking, BookingEquipment, PriceBreakdown, GroupDiscountTier, RefundRule, TimePricingRule } from '../types';
 
 const api = axios.create({
   baseURL: '/api',
@@ -11,6 +11,16 @@ export const venueApi = {
 
 export const timeSlotApi = {
   getTimeSlots: (): Promise<TimeSlot[]> => api.get('/config/time-slots').then((res) => res.data),
+};
+
+export const pricingRulesApi = {
+  getPricingRules: (): Promise<TimePricingRule[]> => api.get('/config/pricing-rules').then((res) => res.data),
+  addPricingRule: (rule: Omit<TimePricingRule, 'id'>): Promise<TimePricingRule> =>
+    api.post('/config/pricing-rules', rule).then((res) => res.data),
+  updatePricingRule: (id: string, updates: Partial<TimePricingRule>): Promise<TimePricingRule> =>
+    api.put(`/config/pricing-rules/${id}`, updates).then((res) => res.data),
+  deletePricingRule: (id: string): Promise<{ success: boolean }> =>
+    api.delete(`/config/pricing-rules/${id}`).then((res) => res.data),
 };
 
 export const equipmentApi = {

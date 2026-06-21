@@ -1,7 +1,39 @@
 import { DayType, TimePeriod } from '../types';
 import { timeSlots, timePricingRules, groupDiscountTiers, equipmentList, temporaryServiceFeeRule } from '../data/store';
 
+const HOLIDAY_DATES: Set<string> = new Set([
+  '2026-01-01',
+  '2026-02-16', '2026-02-17', '2026-02-18',
+  '2026-04-04', '2026-04-05', '2026-04-06',
+  '2026-05-01', '2026-05-02', '2026-05-03',
+  '2026-06-19', '2026-06-20', '2026-06-21',
+  '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04', '2026-10-05', '2026-10-06', '2026-10-07',
+]);
+
+export function roundToCents(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
+export function isHoliday(dateStr: string): boolean {
+  return HOLIDAY_DATES.has(dateStr);
+}
+
+export function addHolidayDate(dateStr: string): void {
+  HOLIDAY_DATES.add(dateStr);
+}
+
+export function removeHolidayDate(dateStr: string): void {
+  HOLIDAY_DATES.delete(dateStr);
+}
+
+export function getHolidayDates(): string[] {
+  return Array.from(HOLIDAY_DATES).sort();
+}
+
 export function getDayType(dateStr: string): DayType {
+  if (isHoliday(dateStr)) {
+    return 'holiday';
+  }
   const date = new Date(dateStr);
   const dayOfWeek = date.getDay();
   if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -37,14 +69,27 @@ export function calculateDurationHours(startTime: string, endTime: string): numb
   const [endH, endM] = endTime.split(':').map(Number);
   const startMinutes = startH * 60 + startM;
   const endMinutes = endH * 60 + endM;
-  return (endMinutes - startMinutes) / 60;
+  return roundToCents((endMinutes - startMinutes) / 60);
 }
 
+const DAY_TYPE_FALLBACK: Record<DayType, DayType[]> = {
+  holiday: ['weekend', 'weekday'],
+  weekend: ['weekday'],
+  weekday: [],
+};
+
 export function getTimeSlotPrice(zoneId: string, timeSlotId: string, dayType: DayType): number | null {
-  const rule = timePricingRules.find(
-    (r) => r.zoneId === zoneId && r.timeSlotId === timeSlotId && r.dayType === dayType
-  );
-  return rule ? rule.pricePerHour : null;
+  const dayTypesToTry: DayType[] = [dayType, ...DAY_TYPE_FALLBACK[dayType]];
+  
+  for (const dt of dayTypesToTry) {
+    const rule = timePricingRules.find(
+      (r) => r.zoneId === zoneId && r.timeSlotId === timeSlotId && r.dayType === dt
+    );
+    if (rule) {
+      return roundToCents(rule.pricePerHour);
+    }
+  }
+  return null;
 }
 
 export function getGroupDiscount(peopleCount: number): { discountRate: number; tierName: string } {
@@ -66,19 +111,19 @@ export function calculateEquipmentTotalPrice(
   for (const item of equipmentItems) {
     const equipment = equipmentList.find((e) => e.id === item.equipmentId);
     if (equipment) {
-      const itemTotal = equipment.pricePerHour * item.quantity * durationHours;
-      total += itemTotal;
+      const itemTotal = roundToCents(equipment.pricePerHour * item.quantity * durationHours);
+      total = roundToCents(total + itemTotal);
       details.push({
         equipmentId: equipment.id,
         name: equipment.name,
         quantity: item.quantity,
-        pricePerHour: equipment.pricePerHour,
+        pricePerHour: roundToCents(equipment.pricePerHour),
         total: itemTotal,
       });
     }
   }
 
-  return { total, details };
+  return { total: roundToCents(total), details };
 }
 
 export function calculateTemporaryServiceFee(
@@ -93,7 +138,7 @@ export function calculateTemporaryServiceFee(
   if (diffHours < temporaryServiceFeeRule.thresholdHours && diffHours > 0) {
     return {
       applied: true,
-      amount: temporaryServiceFeeRule.feeAmount,
+      amount: roundToCents(temporaryServiceFeeRule.feeAmount),
     };
   }
   return { applied: false, amount: 0 };
@@ -125,11 +170,11 @@ export function calculateTotalPrice(params: CalculatePriceParams) {
   }
 
   const durationHours = calculateDurationHours(startTime, endTime);
-  const basePrice = pricePerHour * durationHours;
+  const basePrice = roundToCents(pricePerHour * durationHours);
 
   const { discountRate, tierName } = getGroupDiscount(peopleCount);
-  const discountedPrice = basePrice * discountRate;
-  const discountAmount = basePrice - discountedPrice;
+  const discountedPrice = roundToCents(basePrice * discountRate);
+  const discountAmount = roundToCents(basePrice - discountedPrice);
 
   const { total: equipmentTotal, details: equipmentDetails } = calculateEquipmentTotalPrice(
     equipment,
@@ -142,7 +187,7 @@ export function calculateTotalPrice(params: CalculatePriceParams) {
     currentDateTime
   );
 
-  const total = discountedPrice + equipmentTotal + tempFeeAmount;
+  const total = roundToCents(discountedPrice + equipmentTotal + tempFeeAmount);
 
   return {
     basePrice,

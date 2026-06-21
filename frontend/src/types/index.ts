@@ -88,6 +88,15 @@ export interface GroupDiscountTier {
   description: string;
 }
 
+export interface TimePricingRule {
+  id: string;
+  name: string;
+  zoneId: string;
+  timeSlotId: string;
+  dayType: DayType;
+  pricePerHour: number;
+}
+
 export interface RefundRule {
   id: string;
   name: string;

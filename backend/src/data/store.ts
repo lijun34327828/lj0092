@@ -155,6 +155,36 @@ export const timePricingRules: TimePricingRule[] = [
   { id: 'tp-46', name: '周末午场F区', zoneId: 'zone-f', timeSlotId: 'slot-afternoon', dayType: 'weekend', pricePerHour: 100 },
   { id: 'tp-47', name: '周末晚场F区', zoneId: 'zone-f', timeSlotId: 'slot-evening', dayType: 'weekend', pricePerHour: 110 },
   { id: 'tp-48', name: '周末夜场F区', zoneId: 'zone-f', timeSlotId: 'slot-night', dayType: 'weekend', pricePerHour: 120 },
+  
+  { id: 'tp-49', name: '节假日早场A区', zoneId: 'zone-a', timeSlotId: 'slot-morning', dayType: 'holiday', pricePerHour: 160 },
+  { id: 'tp-50', name: '节假日午场A区', zoneId: 'zone-a', timeSlotId: 'slot-afternoon', dayType: 'holiday', pricePerHour: 180 },
+  { id: 'tp-51', name: '节假日晚场A区', zoneId: 'zone-a', timeSlotId: 'slot-evening', dayType: 'holiday', pricePerHour: 200 },
+  { id: 'tp-52', name: '节假日夜场A区', zoneId: 'zone-a', timeSlotId: 'slot-night', dayType: 'holiday', pricePerHour: 220 },
+  
+  { id: 'tp-53', name: '节假日早场B区', zoneId: 'zone-b', timeSlotId: 'slot-morning', dayType: 'holiday', pricePerHour: 180 },
+  { id: 'tp-54', name: '节假日午场B区', zoneId: 'zone-b', timeSlotId: 'slot-afternoon', dayType: 'holiday', pricePerHour: 200 },
+  { id: 'tp-55', name: '节假日晚场B区', zoneId: 'zone-b', timeSlotId: 'slot-evening', dayType: 'holiday', pricePerHour: 220 },
+  { id: 'tp-56', name: '节假日夜场B区', zoneId: 'zone-b', timeSlotId: 'slot-night', dayType: 'holiday', pricePerHour: 240 },
+  
+  { id: 'tp-57', name: '节假日早场C区', zoneId: 'zone-c', timeSlotId: 'slot-morning', dayType: 'holiday', pricePerHour: 140 },
+  { id: 'tp-58', name: '节假日午场C区', zoneId: 'zone-c', timeSlotId: 'slot-afternoon', dayType: 'holiday', pricePerHour: 160 },
+  { id: 'tp-59', name: '节假日晚场C区', zoneId: 'zone-c', timeSlotId: 'slot-evening', dayType: 'holiday', pricePerHour: 180 },
+  { id: 'tp-60', name: '节假日夜场C区', zoneId: 'zone-c', timeSlotId: 'slot-night', dayType: 'holiday', pricePerHour: 200 },
+  
+  { id: 'tp-61', name: '节假日早场D区', zoneId: 'zone-d', timeSlotId: 'slot-morning', dayType: 'holiday', pricePerHour: 220 },
+  { id: 'tp-62', name: '节假日午场D区', zoneId: 'zone-d', timeSlotId: 'slot-afternoon', dayType: 'holiday', pricePerHour: 240 },
+  { id: 'tp-63', name: '节假日晚场D区', zoneId: 'zone-d', timeSlotId: 'slot-evening', dayType: 'holiday', pricePerHour: 260 },
+  { id: 'tp-64', name: '节假日夜场D区', zoneId: 'zone-d', timeSlotId: 'slot-night', dayType: 'holiday', pricePerHour: 280 },
+  
+  { id: 'tp-65', name: '节假日早场E区', zoneId: 'zone-e', timeSlotId: 'slot-morning', dayType: 'holiday', pricePerHour: 240 },
+  { id: 'tp-66', name: '节假日午场E区', zoneId: 'zone-e', timeSlotId: 'slot-afternoon', dayType: 'holiday', pricePerHour: 260 },
+  { id: 'tp-67', name: '节假日晚场E区', zoneId: 'zone-e', timeSlotId: 'slot-evening', dayType: 'holiday', pricePerHour: 280 },
+  { id: 'tp-68', name: '节假日夜场E区', zoneId: 'zone-e', timeSlotId: 'slot-night', dayType: 'holiday', pricePerHour: 300 },
+  
+  { id: 'tp-69', name: '节假日早场F区', zoneId: 'zone-f', timeSlotId: 'slot-morning', dayType: 'holiday', pricePerHour: 110 },
+  { id: 'tp-70', name: '节假日午场F区', zoneId: 'zone-f', timeSlotId: 'slot-afternoon', dayType: 'holiday', pricePerHour: 120 },
+  { id: 'tp-71', name: '节假日晚场F区', zoneId: 'zone-f', timeSlotId: 'slot-evening', dayType: 'holiday', pricePerHour: 130 },
+  { id: 'tp-72', name: '节假日夜场F区', zoneId: 'zone-f', timeSlotId: 'slot-night', dayType: 'holiday', pricePerHour: 140 },
 ];
 
 export const groupDiscountTiers: GroupDiscountTier[] = [
